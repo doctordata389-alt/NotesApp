@@ -172,7 +172,12 @@ void initState(){
                   .compareTo(a['isPinned'] as int);
                   
                 });
-                if (selectedFilter == 'Pinned') {
+                if(selectedFilter=='Favorite'){
+                  notes=notes.where(
+                    (note) => note['isFavorite']==1,
+                  ).toList();
+                  }
+                  else if (selectedFilter == 'Pinned') {
                             notes = notes.where(
                         (note) => note['isPinned'] ==1,
                           ).toList();
@@ -208,11 +213,26 @@ void initState(){
                       date: note['date']??'',
                       id: note['id']??'',
                       isPinned: note['isPinned']==1, 
+                      isFavorite: note['isFavorite']==1,
                       cardColor: color.withValues(), 
                       tagColor: color, 
                       dotColor: color,
                       onUpdate: refreshNotes,
-                
+
+                      onFavorite: ()async{
+                        int newvalue=note['isFavorite']==1?0:1;
+
+                        await dbhandler.updateFavorite(note['id'], newvalue);
+                        await ref.doc(note['id']).update({'isFavorite':newvalue});
+
+                        refreshNotes();
+
+                        if (selectedFilter == 'Favorite' && newvalue == 0) {
+                              setState(() {
+                                   selectedFilter = 'All';
+                                 });
+                        }
+                      },
                       onDelete: () async{
                         await dbhandler.deleteData(note['id']);
                 

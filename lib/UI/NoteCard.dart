@@ -6,6 +6,8 @@ class Notecard extends StatelessWidget {
   final String title, Note, tag, date,id ;
   final Color cardColor, tagColor,dotColor;
   final bool isPinned;
+  final bool isFavorite;
+  final VoidCallback onFavorite;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
 
@@ -18,8 +20,10 @@ class Notecard extends StatelessWidget {
      required this.cardColor, 
      required this.tagColor, 
      required this.dotColor,
-     required this.onDelete, 
+     required this.onDelete,
+     required this.onFavorite, 
      this.isPinned=false,
+     this.isFavorite=false,
      required this.id,
       required this.onUpdate
      });
@@ -27,6 +31,7 @@ class Notecard extends StatelessWidget {
      @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.deferToChild,
       onTap: () {
 
   Navigator.push(
@@ -87,11 +92,11 @@ class Notecard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
               ),
-              IconButton(
-                onPressed: (){
-                  
-                }, 
-                icon: Icon(Icons.favorite_border_sharp,color: Colors.black,))
+              GestureDetector(
+                onTap: onFavorite,
+                child: Icon(
+                  isFavorite? Icons.favorite:Icons.favorite_border,
+                  color:isFavorite? Colors.red:Colors.black))
             ],
           ),
           Text(Note,
@@ -111,8 +116,8 @@ class Notecard extends StatelessWidget {
                   shape: BoxShape.circle
                 ),
                 ),
-                IconButton(onPressed:onDelete, 
-                icon: Icon(Icons.delete,color: Colors.black,)),
+                GestureDetector(onTap: onDelete, 
+                child: Icon(Icons.delete,color: Colors.black,)),
             ],
           ),
         ]

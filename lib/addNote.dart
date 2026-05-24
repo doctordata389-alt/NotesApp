@@ -36,6 +36,7 @@ final user = FirebaseAuth.instance.currentUser;
       'isPinned': isPinned?1:0,
       'date': DateFormat('d MMM y').format(DateTime.now()).toString(),
       'id':id,
+      'isFavorite':0,
       'userId':user!.uid,
     };
     try{
@@ -66,8 +67,6 @@ final user = FirebaseAuth.instance.currentUser;
 
 Color getTagColor(String tag){
   switch(tag){
-    case 'Favorite':
-    return const Color.fromARGB(255, 175, 46, 143);
     case 'Work':
     return const Color.fromARGB(255, 224, 135, 128);
     case 'Personal':
@@ -121,7 +120,7 @@ Color getTagColor(String tag){
                 children: [
                   Wrap(
                     spacing: 10,
-                    children: ['General','Favorite','Work','Personal','Study']
+                    children: ['General','Work','Personal','Study']
                     .map(
                       (tag)=>ChoiceChip(
                         label: Text(tag), 

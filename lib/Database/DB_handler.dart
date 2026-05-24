@@ -24,6 +24,7 @@ if(_database!=null){
       tag TEXT,
       date TEXT,
       isPinned INTEGER,
+      isFavorite INTEGER,
       userId TEXT
       )
       '''
@@ -53,6 +54,11 @@ if(_database!=null){
   )async{
     Database? db=await database;
     await db.update('notes', note, where: 'id=?', whereArgs: [id]);
+  }
+
+  Future<void> updateFavorite(String id, int newvalue)async{
+    Database? db=await database;
+    await db.update('notes',{'isFavorite':newvalue},where: 'id=?',whereArgs: [id]);
   }
 
 }

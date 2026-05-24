@@ -38,8 +38,6 @@ CollectionReference ref=FirebaseFirestore.instance.collection('post');
 
 Color getTagColor(String tag){
   switch(tag){
-    case 'Favorite':
-    return const Color.fromARGB(255, 175, 46, 143);
     case 'Work':
     return const Color.fromARGB(255, 224, 135, 128);
     case 'Personal':
@@ -72,6 +70,7 @@ Future<void> save() async {
     'note': UpdatenoteController.text.trim(),
 
     'tag': selectedTag,
+    'isFavorite':0,
 
     'isPinned': isPinned ? 1 : 0,
 
@@ -158,7 +157,7 @@ Future<void> save() async {
                 children: [
                   Wrap(
                     spacing: 10,
-                    children: ['General','Favorite','Work','Personal','Study']
+                    children: ['General','Work','Personal','Study']
                     .map(
                       (tag)=>ChoiceChip(
                         label: Text(tag), 
